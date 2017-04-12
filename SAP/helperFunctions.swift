@@ -1,15 +1,12 @@
 //
-//  main.swift
+//  helperFunctions.swift
 //  SAP
 //
-//  Created by Gannon Barnett on 4/5/17.
+//  Created by Gannon Barnett on 4/10/17.
 //  Copyright © 2017 Barnett. All rights reserved.
 //
 
 import Foundation
-
-let VMtest = VM(file: "doublesInput")
-VMtest.run()
 
 func characterToUnicodeValue (_ c : Character) -> Int {
     let s = String(c)
@@ -20,6 +17,7 @@ func unicodeValueToCharacter(_ n : Int) -> Character {
     return Character(UnicodeScalar(n)!)
 }
 
+/*
 func splitStringIntoLines(expression: String) -> [String] {
     return expression.characters.split{ $0 == "\n"}.map{ String($0) }
 }
@@ -49,5 +47,4 @@ func writeTextFile(_ path: String, data: String) -> String? {
     }
     return nil
 }
-
-
+ */
