@@ -225,7 +225,7 @@ class VM {
     }
     
     func run() {
-        print("Running program from file <" + file + ".txt>")a
+        print("Running program from file <" + file + ".txt>")
         while memory[programCounter] != 0 { //if memory[programCounter] = 0, halt program.
             print("executing at line " + String(programCounter) + " which has value " + String(memory[programCounter]))
             execute(command: getInstruction(rawValue: memory[programCounter]))
