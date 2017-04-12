@@ -175,13 +175,7 @@ class VM {
             
         case .outs:
             programCounter += 1
-            let str_LOCATION = memory[programCounter]
-            let str_LENGTH = memory[str_LOCATION]
-            var s = String()
-            for value in str_LOCATION + 1 ... str_LOCATION + str_LENGTH {
-                s.append(unicodeValueToCharacter(value))
-            }
-            print(s)
+            print(toUnicodeChar(pc: programCounter))
         
         case .compir:
             programCounter += 1
@@ -224,10 +218,19 @@ class VM {
         
     }
     
+    func toUnicodeChar(pc : Int) -> String {
+        let str_LOCATION = memory[pc]
+        let str_LENGTH = memory[str_LOCATION]
+        var s = String()
+        for value in str_LOCATION + 1 ... str_LOCATION + str_LENGTH - 1{
+            s.append(unicodeValueToCharacter(memory[value]))
+        }
+        return s
+    }
+    
     func run() {
         print("Running program from file <" + file + ".txt>")
         while memory[programCounter] != 0 { //if memory[programCounter] = 0, halt program.
-            print("executing at line " + String(programCounter) + " which has value " + String(memory[programCounter]))
             execute(command: getInstruction(rawValue: memory[programCounter]))
             programCounter += 1
         }
