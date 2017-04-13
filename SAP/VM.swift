@@ -233,7 +233,7 @@ class VM {
     
     func run() {
         print("Running program from file <" + file + ".txt>")
-        while !breakPoints.contains(programCounter) || memory[programCounter] != 0 { //if memory[programCounter] = 0, halt program.
+        while !breakPoints.contains(programCounter) && memory[programCounter] != 0 { //if memory[programCounter] = 0, halt program.
             execute(command: getInstruction(rawValue: memory[programCounter]))
             programCounter += 1
         }
