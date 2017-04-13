@@ -19,17 +19,13 @@ class VM {
     var stackPointer : Int = 0
     
     var labels = [[Int]]()
-    var breakPoints = [Int]() //collection of program Counter lines to stop program at
-    
+  
     init(file: String) {
         self.file = file
         load(fileName: file)
     }
     
-    func addBreakPoint(bp: Int) {
-        
-    }
-    
+
     func load(fileName: String) {
         let file = fileName + ".txt"
         let (message, text) = readTextFile("/Users/gannonbarnett/Desktop/xCodeThings/SAP/doublesInput.txt")
@@ -178,7 +174,7 @@ class VM {
             
         case .outs:
             programCounter += 1
-            print(toUnicodeChar(pc: programCounter))
+            print(toUnicodeChar(pc: programCounter), terminator: "")
         
         case .compir:
             programCounter += 1
@@ -200,18 +196,19 @@ class VM {
         case .outcr:
             programCounter += 1
             let character = unicodeValueToCharacter(memory[programCounter])
-            print(character)
+            print(character, terminator: "")
             
         case .printi:
             programCounter += 1
-            let character = memory[programCounter]
-            print(character)
+            let character = registers[memory[programCounter]]
+            print(character, terminator: "")
         
         case .jmpne:
+            var destination : Int = 0
+            programCounter += 1
             if compareRegister != 0 {
-                programCounter += 2
-            }else{
-                programCounter += 1
+                destination = memory[programCounter - 1]
+                programCounter = destination
             }
             
         default:
@@ -225,7 +222,7 @@ class VM {
         let str_LOCATION = memory[pc]
         let str_LENGTH = memory[str_LOCATION]
         var s = String()
-        for value in str_LOCATION + 1 ... str_LOCATION + str_LENGTH - 1{
+        for value in str_LOCATION + 1 ... str_LOCATION + str_LENGTH {
             s.append(unicodeValueToCharacter(memory[value]))
         }
         return s
@@ -233,7 +230,8 @@ class VM {
     
     func run() {
         print("Running program from file <" + file + ".txt>")
-        while !breakPoints.contains(programCounter) && memory[programCounter] != 0 { //if memory[programCounter] = 0, halt program.
+        while memory[programCounter] != 0 { //if memory[programCounter] = 0, halt program.
+          //  print("executing command with instruction: " + String(describing: getInstruction(rawValue: memory[programCounter])))
             execute(command: getInstruction(rawValue: memory[programCounter]))
             programCounter += 1
         }
