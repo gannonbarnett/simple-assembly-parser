@@ -19,21 +19,24 @@ class VM {
     var stackPointer : Int = 0
     
     var labels = [[Int]]()
+    var breakPoints = [Int]() //collection of program Counter lines to stop program at
     
     init(file: String) {
         self.file = file
         load(fileName: file)
     }
     
+    func addBreakPoint(bp: Int) {
+        
+    }
+    
     func load(fileName: String) {
         let file = fileName + ".txt"
         let (message, text) = readTextFile("/Users/gannonbarnett/Desktop/xCodeThings/SAP/doublesInput.txt")
-        print(message)
         guard message == nil else {
             print("Error: File \(file) not found")
             return
         }
-        print(text)
         let lines = splitStringIntoLines(expression: text!)
         programCounter = Int(lines[1])!
         for var index in 2 ... lines.count - 1{
@@ -230,7 +233,7 @@ class VM {
     
     func run() {
         print("Running program from file <" + file + ".txt>")
-        while memory[programCounter] != 0 { //if memory[programCounter] = 0, halt program.
+        while !breakPoints.contains(programCounter) || memory[programCounter] != 0 { //if memory[programCounter] = 0, halt program.
             execute(command: getInstruction(rawValue: memory[programCounter]))
             programCounter += 1
         }
