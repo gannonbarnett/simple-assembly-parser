@@ -27,8 +27,7 @@ class VM {
     
 
     func load(fileName: String) {
-        let file = fileName + ".txt"
-        let (message, text) = readTextFile("/Users/gannonbarnett/Desktop/xCodeThings/SAP/doublesInput.txt")
+        let (message, text) = readTextFile("/Users/gannonbarnett/Desktop/xCodeThings/SAP/" + fileName + ".txt")
         guard message == nil else {
             print("Error: File \(file) not found")
             return
@@ -236,12 +235,11 @@ class VM {
     }
     
     func run() {
-        print("Running program from file <" + file + ".txt>")
+        print("Running program from file <" + file + ".txt> \n")
         while memory[programCounter] != 0 { //if memory[programCounter] = 0, halt program.
            // print("executing command with instruction: " + String(describing: getInstruction(rawValue: memory[programCounter])))
             execute(command: getInstruction(rawValue: memory[programCounter]))
             programCounter += 1
         }
-        print("Halt at line " + String(programCounter))
     }
 }
