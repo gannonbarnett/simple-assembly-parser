@@ -144,9 +144,10 @@ class VM {
         case .movmr:
             programCounter += 1
             let label = memory[programCounter]
+            let label_VALUE = memory[label]
             programCounter += 1
             let R_INDEX = memory[programCounter]
-            registers[R_INDEX] = label
+            registers[R_INDEX] = label_VALUE
             
         case .movxr:
             break
@@ -195,7 +196,9 @@ class VM {
             
         case .outcr:
             programCounter += 1
-            let character = unicodeValueToCharacter(memory[programCounter])
+            let label = memory[programCounter]
+            let label_VALUE = registers[label]
+            let character = unicodeValueToCharacter(label_VALUE)
             print(character, terminator: "")
             
         case .printi:
@@ -205,11 +208,15 @@ class VM {
         
         case .jmpne:
             var destination : Int = 0
-            programCounter += 1
             if compareRegister != 0 {
-                destination = memory[programCounter - 1]
-                programCounter = destination
+                destination = memory[programCounter]
+                programCounter = destination - 2 //offset PC inc in execute function
+            }else {
+                programCounter += 1
             }
+        
+        case .clrr:
+            registers = registers.map{$0 - $0}
             
         default:
             print("CODE MISSING")
@@ -231,7 +238,7 @@ class VM {
     func run() {
         print("Running program from file <" + file + ".txt>")
         while memory[programCounter] != 0 { //if memory[programCounter] = 0, halt program.
-          //  print("executing command with instruction: " + String(describing: getInstruction(rawValue: memory[programCounter])))
+           // print("executing command with instruction: " + String(describing: getInstruction(rawValue: memory[programCounter])))
             execute(command: getInstruction(rawValue: memory[programCounter]))
             programCounter += 1
         }
