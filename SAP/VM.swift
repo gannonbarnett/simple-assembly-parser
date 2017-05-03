@@ -114,21 +114,34 @@ class VM {
     
     func execute(command : Instruction) {
         switch command {
-        /*case .clrr:
-            break
+        case .clrr:
+            programCounter += 1
+            let label = memory[programCounter]
+            registers[label] = 0
             
         case .clrx:
-            break
+            programCounter += 1
+            let r_LABEL = memory[programCounter]
+            let m_LABEL = registers[r_LABEL]
+            memory[m_LABEL] = 0
             
         case .clrm:
-            break
+            programCounter += 1
+            let m_LABEL = memory[programCounter]
+            memory[m_LABEL] = 0
             
         case .clrb:
-            break
+            programCounter += 1
+            let m_BEGINLOCA = memory[programCounter]
+            programCounter += 1
+            let m_ENDLOCA = memory[programCounter]
+            for i in m_BEGINLOCA ... m_ENDLOCA {
+                memory[i] = 0
+            }
             
         case .movir:
-            break
-        */
+            print("IDK MOVIR")
+        
         case .movrr:
             programCounter += 1
             let firstR_INDEX = memory[programCounter]
@@ -237,7 +250,6 @@ class VM {
     func run() {
         print("Running program from file <" + file + ".txt> \n")
         while memory[programCounter] != 0 { //if memory[programCounter] = 0, halt program.
-           // print("executing command with instruction: " + String(describing: getInstruction(rawValue: memory[programCounter])))
             execute(command: getInstruction(rawValue: memory[programCounter]))
             programCounter += 1
         }

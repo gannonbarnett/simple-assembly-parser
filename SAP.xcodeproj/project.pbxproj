@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1623AB131EBA520D0039E3FD /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1623AB121EBA520D0039E3FD /* Token.swift */; };
+		1623AB151EBA560D0039E3FD /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1623AB141EBA560D0039E3FD /* Tokenizer.swift */; };
 		1686DCC81E956D1700E0B3F4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686DCC71E956D1700E0B3F4 /* main.swift */; };
 		1686DCFC1E9BEA8500E0B3F4 /* VM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686DCFB1E9BEA8500E0B3F4 /* VM.swift */; };
 		1686DD011EA1300400E0B3F4 /* SAP_helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686DD001EA1300400E0B3F4 /* SAP_helper.swift */; };
+		1686DD051EAE6AF200E0B3F4 /* Assembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686DD041EAE6AF200E0B3F4 /* Assembler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,10 +28,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1623AB121EBA520D0039E3FD /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		1623AB141EBA560D0039E3FD /* Tokenizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
 		1686DCC41E956D1700E0B3F4 /* SAP */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SAP; sourceTree = BUILT_PRODUCTS_DIR; };
 		1686DCC71E956D1700E0B3F4 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		1686DCFB1E9BEA8500E0B3F4 /* VM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VM.swift; sourceTree = "<group>"; };
 		1686DD001EA1300400E0B3F4 /* SAP_helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAP_helper.swift; sourceTree = "<group>"; };
+		1686DD041EAE6AF200E0B3F4 /* Assembler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assembler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,8 +68,11 @@
 			isa = PBXGroup;
 			children = (
 				1686DCC71E956D1700E0B3F4 /* main.swift */,
-				1686DD001EA1300400E0B3F4 /* SAP_helper.swift */,
 				1686DCFB1E9BEA8500E0B3F4 /* VM.swift */,
+				1686DD041EAE6AF200E0B3F4 /* Assembler.swift */,
+				1686DD001EA1300400E0B3F4 /* SAP_helper.swift */,
+				1623AB121EBA520D0039E3FD /* Token.swift */,
+				1623AB141EBA560D0039E3FD /* Tokenizer.swift */,
 			);
 			path = SAP;
 			sourceTree = "<group>";
@@ -127,6 +136,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1686DD051EAE6AF200E0B3F4 /* Assembler.swift in Sources */,
+				1623AB151EBA560D0039E3FD /* Tokenizer.swift in Sources */,
+				1623AB131EBA520D0039E3FD /* Token.swift in Sources */,
 				1686DCC81E956D1700E0B3F4 /* main.swift in Sources */,
 				1686DCFC1E9BEA8500E0B3F4 /* VM.swift in Sources */,
 				1686DD011EA1300400E0B3F4 /* SAP_helper.swift in Sources */,

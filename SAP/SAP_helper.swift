@@ -8,6 +8,13 @@
 
 import Foundation
 
+func charToAscii(c: Character) -> Int {
+    return Int(String(c).utf8.first!)
+}
+
+func AsciiToChar(n: Int) -> Character {
+    return Character(UnicodeScalar(n)!)
+}
 
 func characterToUnicodeValue (_ c : Character) -> Int {
     let s = String(c)
