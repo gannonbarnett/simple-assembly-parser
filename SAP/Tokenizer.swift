@@ -9,5 +9,13 @@
 import Foundation
 
 class Tokenizer {
-
+    let line : String
+    
+    init(for lineInput: String) {
+        line = lineInput
+    }
+    
+ //   if line.indexOf
+    
+    
 }

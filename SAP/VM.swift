@@ -46,6 +46,11 @@ class VM {
         print("Load finished!")
     }
     
+    func getInstruction(rawValue: Int) -> Instruction{
+        let instruction : Instruction = Instruction(rawValue: rawValue)!
+        return instruction
+    }
+    
     enum Instruction : Int {
         case halt
         case clrr
@@ -80,12 +85,12 @@ class VM {
         case sojnz
         case aojz
         case aojnz
-        case compir
-        case comprr
+        case cmpir
+        case cmprr
         case cmpmr
-        case jmpn //fixed
+        case jmpn
         case jmpz
-        case jmpp //added
+        case jmpp
         case jsr
         case ret
         case push
@@ -107,41 +112,37 @@ class VM {
         case jmpne
     }
     
-    func getInstruction(rawValue: Int) -> Instruction{
-        let instruction : Instruction = Instruction(rawValue: rawValue)!
-        return instruction
-    }
-    
     func execute(command : Instruction) {
         switch command {
-        case .clrr:
-            programCounter += 1
-            let label = memory[programCounter]
-            registers[label] = 0
             
         case .clrx:
             programCounter += 1
-            let r_LABEL = memory[programCounter]
-            let m_LABEL = registers[r_LABEL]
-            memory[m_LABEL] = 0
+            let firstR_VALUE = registers[memory[programCounter]]
+            memory[firstR_VALUE] = 0
             
         case .clrm:
             programCounter += 1
-            let m_LABEL = memory[programCounter]
-            memory[m_LABEL] = 0
+            let label = memory[programCounter]
+            let label_VALUE = memory[label]
+            memory[label_VALUE] = 0
             
         case .clrb:
             programCounter += 1
-            let m_BEGINLOCA = memory[programCounter]
+            let start_INDEX = registers[memory[programCounter]]
             programCounter += 1
-            let m_ENDLOCA = memory[programCounter]
-            for i in m_BEGINLOCA ... m_ENDLOCA {
-                memory[i] = 0
+            let block_COUNT = registers[memory[programCounter]]
+            var positionToBeCleared = start_INDEX
+            for _ in 0..<block_COUNT {
+                memory[positionToBeCleared] = 0
+                positionToBeCleared += 1
             }
             
         case .movir:
-            print("IDK MOVIR")
-        
+            programCounter += 1
+            let constant = memory[programCounter]
+            programCounter += 1
+            registers[memory[programCounter]] = constant
+            
         case .movrr:
             programCounter += 1
             let firstR_INDEX = memory[programCounter]
@@ -149,9 +150,14 @@ class VM {
             programCounter += 1
             let secondR_INDEX = memory[programCounter]
             registers[secondR_INDEX] = firstR_VALUE
-        
+            
         case .movrm:
-            break
+            programCounter += 1
+            let firstR_INDEX = memory[programCounter]
+            let firstR_VALUE = registers[firstR_INDEX]
+            programCounter += 1
+            let LABEL_VALUE = memory[programCounter]
+            memory[LABEL_VALUE] = firstR_VALUE
             
         case .movmr:
             programCounter += 1
@@ -162,14 +168,32 @@ class VM {
             registers[R_INDEX] = label_VALUE
             
         case .movxr:
-            break
+            programCounter += 1
+            let r1_VALUE = registers[memory[programCounter]]
+            programCounter += 1
+            registers[memory[programCounter]] = r1_VALUE
             
         case .movar:
-            break
+            programCounter += 1
+            let label_INDEX = memory[programCounter]
+            programCounter += 1
+            registers[memory[programCounter]] = label_INDEX
             
         case .movb:
-            break
-        
+            programCounter += 1
+            let start_INDEX = memory[programCounter]
+            programCounter += 1
+            let block_DESTINATION = memory[programCounter]
+            programCounter += 1
+            let block_COUNT = memory[programCounter]
+            var positionToBeMoved = start_INDEX
+            var destinationPosition = block_DESTINATION
+            for _ in 0..<block_COUNT {
+                memory[destinationPosition] = memory[positionToBeMoved]
+                destinationPosition += 1
+                positionToBeMoved += 1
+            }
+            
         case .addir:
             programCounter += 1
             let constant = memory[programCounter]
@@ -185,19 +209,277 @@ class VM {
             let secondR_INDEX = memory[programCounter]
             registers[secondR_INDEX] += firstR_VALUE
             
+        case .addmr:
+            programCounter += 1
+            let label = memory[programCounter]
+            let label_VALUE = memory[label]
+            programCounter += 1
+            registers[memory[programCounter]] = label_VALUE
+            
+        case .addxr:
+            programCounter += 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            let value = memory[firstR_VALUE]
+            programCounter += 1
+            registers[memory[programCounter]] = value
+            
+        case .subir:
+            programCounter += 1
+            let constant = memory[programCounter]
+            programCounter += 1
+            let R_VALUE = registers[memory[programCounter]]
+            registers[memory[programCounter]] = R_VALUE - constant
+            
+        case .subrr:
+            programCounter += 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            programCounter += 1
+            let secondR_VALUE = registers[memory[programCounter]]
+            registers[memory[programCounter]] = secondR_VALUE - firstR_VALUE
+            
+        case .submr:
+            programCounter += 1
+            let label = memory[programCounter]
+            let label_VALUE = memory[label]
+            programCounter += 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            registers[memory[programCounter]] = firstR_VALUE - label_VALUE
+            
+        case .subxr:
+            programCounter += 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            let value = memory[firstR_VALUE]
+            programCounter += 1
+            let secondR_VALUE = registers[memory[programCounter]]
+            registers[memory[programCounter]] = secondR_VALUE - value
+            
+        case .mulir:
+            programCounter += 1
+            let constant = memory[programCounter]
+            programCounter += 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            registers[memory[programCounter]] = firstR_VALUE * constant
+            
+        case .mulrr:
+            programCounter += 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            programCounter += 1
+            let secondR_VALUE = registers[memory[programCounter]]
+            registers[memory[programCounter]] = secondR_VALUE * firstR_VALUE
+            
+        case .mulmr:
+            programCounter += 1
+            let label = memory[programCounter]
+            let label_VALUE = memory[label]
+            programCounter += 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            registers[memory[programCounter]] = firstR_VALUE * label_VALUE
+            
+        case .mulxr:
+            programCounter += 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            let value = memory[firstR_VALUE]
+            programCounter += 1
+            let secondR_VALUE = registers[memory[programCounter]]
+            registers[memory[programCounter]] = secondR_VALUE * value
+            
+        case .divir:
+            programCounter += 1
+            let constant = memory[programCounter]
+            programCounter += 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            registers[memory[programCounter]] = firstR_VALUE / constant
+            
+        case .divrr:
+            programCounter += 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            programCounter += 1
+            let secondR_VALUE = registers[memory[programCounter]]
+            registers[memory[programCounter]] = secondR_VALUE / firstR_VALUE
+            
+        case .divmr:
+            programCounter += 1
+            let label = memory[programCounter]
+            let label_VALUE = memory[label]
+            programCounter += 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            registers[memory[programCounter]] = firstR_VALUE / label_VALUE
+            
+        case .divxr:
+            programCounter += 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            let value = memory[firstR_VALUE]
+            programCounter += 1
+            let secondR_VALUE = registers[memory[programCounter]]
+            registers[memory[programCounter]] = secondR_VALUE / value
+            
+        case .jmp:
+            programCounter += 1
+            let destination = memory[programCounter]
+            programCounter = destination
+            
+        case .sojz:
+            programCounter += 1
+            let constant = 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            registers[memory[programCounter]] = firstR_VALUE - constant
+            let updatedFirstR_VALUE = registers[memory[programCounter]]
+            programCounter += 1
+            let label = memory[programCounter]
+            if updatedFirstR_VALUE == 0 {
+                programCounter = label
+            }
+            
+        case .sojnz:
+            programCounter += 1
+            let constant = 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            registers[memory[programCounter]] = firstR_VALUE - constant
+            let updatedFirstR_VALUE = registers[memory[programCounter]]
+            programCounter += 1
+            let label = memory[programCounter]
+            if updatedFirstR_VALUE != 0 {
+                programCounter = label
+            }
+            
+        case .aojz:
+            programCounter += 1
+            let constant = 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            registers[memory[programCounter]] = firstR_VALUE + constant
+            let updatedFirstR_VALUE = registers[memory[programCounter]]
+            programCounter += 1
+            let label = memory[programCounter]
+            if updatedFirstR_VALUE == 0 {
+                programCounter = label
+            }
+            
+        case .aojnz:
+            programCounter += 1
+            let constant = 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            registers[memory[programCounter]] = firstR_VALUE + constant
+            let updatedFirstR_VALUE = registers[memory[programCounter]]
+            programCounter += 1
+            let label = memory[programCounter]
+            if updatedFirstR_VALUE != 0 {
+                programCounter = label
+            }
+            
+        case .cmpmr:
+            programCounter += 1
+            let label = memory[programCounter]
+            programCounter += 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            compareRegister = label - firstR_VALUE
+            
+        case .jmpn:
+            programCounter += 1
+            var destination = 0
+            let label = memory[programCounter]
+            destination = label
+            if compareRegister < 0 {
+                programCounter = destination
+            }
+            
+        case .jmpz:
+            programCounter += 1
+            var destination = 0
+            let label = memory[programCounter]
+            destination = label
+            if compareRegister == 0 {
+                programCounter = destination
+            }
+            
+        case .jmpp:
+            programCounter += 1
+            var destination = 0
+            let label = memory[programCounter]
+            destination = label
+            if compareRegister > 0 {
+                programCounter = destination
+            }
+            
+        case .jsr: //jump to subroutine, r5-r9 pushed
+            break
+            
+        case .ret: //return from subroutine, r5-r9 popped
+            break
+            
+        case .push: //push r1 onto stack
+            break
+            
+        case .pop: //stack pop inot r1
+            break
+            
+        case .stackc: //check stack condition, 0-ok, 1-full, 2-empty
+            break
+            
+        case .outci:
+            programCounter += 1
+            let characterUnicode = memory[programCounter]
+            print(unicodeValueToCharacter(characterUnicode))
+            
+        case .outcx:
+            programCounter += 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            let characterUnicode = memory[firstR_VALUE]
+            print(unicodeValueToCharacter(characterUnicode))
+            
+        case .outcb:
+            programCounter += 1
+            let start_INDEX = registers[memory[programCounter]]
+            programCounter += 1
+            let block_COUNT = registers[memory[programCounter]]
+            var positionToPrinted = start_INDEX
+            for _ in 0..<block_COUNT {
+                print(memory[positionToPrinted])
+                positionToPrinted += 1
+            }
+            
+        case .readi: // read integer from console
+            break
+            
+        case .readc: //read charac from console
+            break
+            
+        case .readln: // read line from console
+            break
+            
+        case .brk: // go into debugger
+            break
+            
+        case .movrx:
+            programCounter += 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            programCounter += 1
+            let secondR_VALUE = registers[memory[programCounter]]
+            memory[secondR_VALUE] = firstR_VALUE
+            
+        case .movxx:
+            programCounter += 1
+            let firstR_VALUE = registers[memory[programCounter]]
+            let contents = memory[firstR_VALUE]
+            programCounter += 1
+            let secondR_VALUE = registers[memory[programCounter]]
+            memory[secondR_VALUE] = contents
+            
         case .outs:
             programCounter += 1
             print(toUnicodeChar(pc: programCounter), terminator: "")
-        
-        case .compir:
+            
+        case .nop:
+            break
+            
+        case .cmpir:
+            programCounter += 1
+            let value = memory[programCounter]
             programCounter += 1
             let firstR_INDEX = memory[programCounter]
             let firstR_VALUE = registers[firstR_INDEX]
-            programCounter += 1
-            let value = memory[programCounter]
             compareRegister = firstR_VALUE - value
             
-        case .comprr:
+        case .cmprr:
             programCounter += 1
             let firstR_INDEX = memory[programCounter]
             let firstR_VALUE = registers[firstR_INDEX]
@@ -217,18 +499,20 @@ class VM {
             programCounter += 1
             let character = registers[memory[programCounter]]
             print(character, terminator: "")
-        
+            
         case .jmpne:
             var destination : Int = 0
             if compareRegister != 0 {
                 destination = memory[programCounter]
-                programCounter = destination - 2 //offset PC inc in execute function
+                programCounter = destination - 2
             }else {
                 programCounter += 1
             }
-        
+            
         case .clrr:
-            registers = registers.map{$0 - $0}
+            programCounter += 1
+            let R_INDEX = memory[programCounter]
+            registers[R_INDEX] = 0
             
         default:
             print("CODE MISSING")
@@ -249,7 +533,7 @@ class VM {
     
     func run() {
         print("Running program from file <" + file + ".txt> \n")
-        while memory[programCounter] != 0 { //if memory[programCounter] = 0, halt program.
+        while memory[programCounter] != 0 { //if memory[programCounter] = 0, halt program
             execute(command: getInstruction(rawValue: memory[programCounter]))
             programCounter += 1
         }

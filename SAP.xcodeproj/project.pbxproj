@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1623AB131EBA520D0039E3FD /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1623AB121EBA520D0039E3FD /* Token.swift */; };
 		1623AB151EBA560D0039E3FD /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1623AB141EBA560D0039E3FD /* Tokenizer.swift */; };
+		1623AB1D1EC38F230039E3FD /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1623AB1C1EC38F230039E3FD /* Stack.swift */; };
 		1686DCC81E956D1700E0B3F4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686DCC71E956D1700E0B3F4 /* main.swift */; };
 		1686DCFC1E9BEA8500E0B3F4 /* VM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686DCFB1E9BEA8500E0B3F4 /* VM.swift */; };
 		1686DD011EA1300400E0B3F4 /* SAP_helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1686DD001EA1300400E0B3F4 /* SAP_helper.swift */; };
@@ -30,6 +31,7 @@
 /* Begin PBXFileReference section */
 		1623AB121EBA520D0039E3FD /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		1623AB141EBA560D0039E3FD /* Tokenizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
+		1623AB1C1EC38F230039E3FD /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		1686DCC41E956D1700E0B3F4 /* SAP */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SAP; sourceTree = BUILT_PRODUCTS_DIR; };
 		1686DCC71E956D1700E0B3F4 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		1686DCFB1E9BEA8500E0B3F4 /* VM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VM.swift; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 				1686DCC71E956D1700E0B3F4 /* main.swift */,
 				1686DCFB1E9BEA8500E0B3F4 /* VM.swift */,
 				1686DD041EAE6AF200E0B3F4 /* Assembler.swift */,
+				1623AB1C1EC38F230039E3FD /* Stack.swift */,
 				1686DD001EA1300400E0B3F4 /* SAP_helper.swift */,
 				1623AB121EBA520D0039E3FD /* Token.swift */,
 				1623AB141EBA560D0039E3FD /* Tokenizer.swift */,
@@ -138,6 +141,7 @@
 			files = (
 				1686DD051EAE6AF200E0B3F4 /* Assembler.swift in Sources */,
 				1623AB151EBA560D0039E3FD /* Tokenizer.swift in Sources */,
+				1623AB1D1EC38F230039E3FD /* Stack.swift in Sources */,
 				1623AB131EBA520D0039E3FD /* Token.swift in Sources */,
 				1686DCC81E956D1700E0B3F4 /* main.swift in Sources */,
 				1686DCFC1E9BEA8500E0B3F4 /* VM.swift in Sources */,
