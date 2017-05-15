@@ -13,12 +13,13 @@ class VM {
     let file : String
     var memory = [Int]()
     var registers = [Int](repeating: 0, count: 10)
+    var stack = [Int](repeating: 0, count: 10)
     
     var programCounter : Int = 0
     var compareRegister : Int = 0
     var stackPointer : Int = 0
     
-    var labels = [[Int]]()
+    var labels = [[Int : String]]() //Int is position, String 
   
     init(file: String) {
         self.file = file
@@ -437,11 +438,24 @@ class VM {
                 positionToPrinted += 1
             }
             
-        case .readi: // read integer from console
-            break
+        case .readi:
+            print(">")
+            let input = readLine()
+            let int = Int(input!)!
+            programCounter += 1
+            let destination = memory[programCounter]
+            registers[destination] = int
+            
+            //MARK:: NEED TO IMPLEMENT ERROR CODE OF INTEGER CASTING
+            programCounter += 1
+            let errorCode = 0
             
         case .readc: //read charac from console
-            break
+            let input = readLine()
+            let char = Character(input!)
+            programCounter += 1
+            let destination = memory[programCounter]
+            registers[destination] = charToAscii(c: char)
             
         case .readln: // read line from console
             break
