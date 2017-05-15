@@ -10,16 +10,16 @@ import Foundation
 
 struct IntStack : CustomStringConvertible{
     var size : Int
-    var data : [Int?]
+    var data : [Int]
     
     var topIndex = 0
     
     init(size : Int) {
         self.size = size
-        data = [Int?](repeatElement(nil, count: size))
+        data = [Int](repeatElement(0, count: size))
     }
     
-    mutating func push(newElement: Int){
+    mutating func push(_ newElement: Int){
         if !isFull() {
             data[topIndex] = newElement
             topIndex += 1
@@ -28,11 +28,9 @@ struct IntStack : CustomStringConvertible{
         }
     }
     
-    mutating func pop() -> Int? {
-        let number : Int? = data[topIndex]!
-        if number != nil {
-            topIndex += -1
-        }
+    mutating func pop() -> Int{
+        let number : Int = data[topIndex]
+        topIndex += -1
         return number
     }
     

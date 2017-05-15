@@ -408,13 +408,21 @@ class VM {
             break
             
         case .push: //push r1 onto stack
-            break
+            programCounter += 1
+            let VAL_INDEX = memory[programCounter]
+            let VALUE = registers[VAL_INDEX]
+            stack.push(VALUE)
             
         case .pop: //stack pop inot r1
-            break
+            programCounter += 1
+            let destination = memory[programCounter]
+            registers[destination] = stack.pop()
             
         case .stackc: //check stack condition, 0-ok, 1-full, 2-empty
-            switch 
+            programCounter += 1
+            var destination = memory[programCounter]
+            registers[destination] = stack.getCondition()
+            
             
         case .outci:
             programCounter += 1

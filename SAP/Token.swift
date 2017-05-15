@@ -35,7 +35,7 @@ struct Token: CustomStringConvertible {
         self.stringValue = stringValue
         self.tupleValue = tupleValue
     }
-    
+
     var description: String {
         return "Token type: \(type) intValue: \(intValue) stringValue: \(stringValue) tupleValue: \(tupleValue)"
     }
