@@ -44,6 +44,16 @@ struct IntStack : CustomStringConvertible{
         return data.count == 0
     }
     
+    func getCondition() -> Int {
+        if isFull() {
+            return 1
+        }
+        if isEmpty() {
+            return 2
+        }
+        
+        return 0
+    }
     var description: String {
         return data.description
     }

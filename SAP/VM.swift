@@ -13,13 +13,13 @@ class VM {
     let file : String
     var memory = [Int]()
     var registers = [Int](repeating: 0, count: 10)
-    var stack = [Int](repeating: 0, count: 10)
+    var stack : IntStack = IntStack(size: 10)
     
     var programCounter : Int = 0
     var compareRegister : Int = 0
     var stackPointer : Int = 0
     
-    var labels = [[Int : String]]() //Int is position, String 
+    var labels = [[Int : String]]() //Int is position, String is label
   
     init(file: String) {
         self.file = file
@@ -414,7 +414,7 @@ class VM {
             break
             
         case .stackc: //check stack condition, 0-ok, 1-full, 2-empty
-            break
+            switch 
             
         case .outci:
             programCounter += 1
