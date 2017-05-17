@@ -14,6 +14,7 @@ class VM {
     var memory = [Int]()
     var registers = [Int](repeating: 0, count: 10)
     var stack : IntStack = IntStack(size: 10)
+    var lines : [String] = []
     
     var programCounter : Int = 0
     var compareRegister : Int = 0
@@ -33,7 +34,7 @@ class VM {
             print("Error: File \(file) not found")
             return
         }
-        let lines = splitStringIntoLines(expression: text!)
+        lines = splitStringIntoLines(expression: text!)
         programCounter = Int(lines[1])!
         for var index in 2 ... lines.count - 1{
             memory.append(Int(lines[index])!)
@@ -47,6 +48,22 @@ class VM {
         print("Load finished!")
     }
     
+    //TEMPORARY ASSEMBLER TESTER
+    var TokenizerObj : Tokenizer = Tokenizer()
+    var tokens : [Token] = []
+    
+    func printTokens() {
+        for l in lines {
+            TokenizerObj.setLine(to: l)
+            tokens.append(contentsOf: TokenizerObj.getTokens())
+        }
+        
+        for t in tokens {
+            print(t)
+        }
+    }
+    
+    //END
     func getInstruction(rawValue: Int) -> Instruction{
         let instruction : Instruction = Instruction(rawValue: rawValue)!
         return instruction

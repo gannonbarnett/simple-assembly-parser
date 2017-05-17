@@ -24,12 +24,12 @@ enum TokenType {
 }
 
 struct Token: CustomStringConvertible {
-    let type: TokenType?
+    let type: TokenType
     let intValue: Int?
     let stringValue: String?
     let tupleValue: Tuple?
     
-    init(type: TokenType?, intValue: Int?, stringValue: String?, tupleValue: Tuple?){
+    init(type: TokenType, intValue: Int?, stringValue: String?, tupleValue: Tuple?){
         self.type = type
         self.intValue = intValue
         self.stringValue = stringValue
@@ -37,7 +37,20 @@ struct Token: CustomStringConvertible {
     }
 
     var description: String {
-        return "Token type: \(type) intValue: \(intValue) stringValue: \(stringValue) tupleValue: \(tupleValue)"
+        var s : String = "Type: \(type)"
+        if let i = intValue {
+            s.append(" intValue: " + String(i))
+        }
+        
+        if let stringV = stringValue {
+            s.append(" stringValue: " + stringV)
+        }
+        
+        if let t = tupleValue {
+            s.append(" tupleValue: " + t.description)
+        }
+        
+        return s
     }
 }
 

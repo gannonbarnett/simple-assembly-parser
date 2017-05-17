@@ -9,6 +9,5 @@
 import Foundation
 
 class Assembler {
-    var symbolTable : [String : Int] = [:]
-    
+
 }

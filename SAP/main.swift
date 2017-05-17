@@ -10,3 +10,4 @@ import Foundation
 
 let VMtest = VM(file: "doublesInput")
 VMtest.run()
+VMtest.printTokens()
