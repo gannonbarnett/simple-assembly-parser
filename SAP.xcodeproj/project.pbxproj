@@ -37,6 +37,7 @@
 		1686DCFB1E9BEA8500E0B3F4 /* VM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VM.swift; sourceTree = "<group>"; };
 		1686DD001EA1300400E0B3F4 /* SAP_helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAP_helper.swift; sourceTree = "<group>"; };
 		1686DD041EAE6AF200E0B3F4 /* Assembler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assembler.swift; sourceTree = "<group>"; };
+		16FBE3BB1ECDEBF400BD0678 /* factorialProgram.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = factorialProgram.txt; path = ../factorialProgram.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +56,7 @@
 			children = (
 				1686DCC61E956D1700E0B3F4 /* SAP */,
 				1686DCC51E956D1700E0B3F4 /* Products */,
+				16FBE3BB1ECDEBF400BD0678 /* factorialProgram.txt */,
 			);
 			sourceTree = "<group>";
 		};

@@ -11,6 +11,7 @@ import Foundation
 class Tokenizer {
     let Instructions : [String] = ["halt", "clrr", "clrx", "clrm", "clrb", "movir", "movrr", "movrm", "movmr", "movxr", "movar", "movb", "addir", "addrr", "addmr", "addxr", "subir", "subrr", "submr", "subxr", "mulir", "mulrr", "mulmr", "mulxr", "divir", "divrr", "divmr", "divxr", "jmp", "sojz", "sojnz", "aojz", "aojnz", "cmpir", "cmprr", "cmpmr", "jmpn", "jmpz", "jmpp", "jsr", "ret", "push", "pop", "stackc", "outci", "outcr", "outcx", "outcb", "readi", "printi", "readc", "readln", "brk", "movrx", "movxx", "outs", "nop", "jmpne"]
     
+    
     var line : String = ""
     var lineParts : [String] = []
     
@@ -42,7 +43,7 @@ class Tokenizer {
         while i < lineParts.count {
             if lineParts[i].contains("\"") { //if the string has quotes, start string builder
                 var stringDraft = ""
-                stringDraft.append(lineParts[i].replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range:nil)) //take out startquotes
+                stringDraft.append(lineParts[i]) //take out startquotes
                 i += 1
                 stringDraft.append(" ") //add spaces where needed
                 
@@ -52,12 +53,38 @@ class Tokenizer {
                     stringDraft.append(" ")
                 }
                 
-                stringDraft.append(lineParts[i].replacingOccurrences(of: "\"", with: "", options: NSString.CompareOptions.literal, range:nil)) //take out endquotes
+                stringDraft.append(lineParts[i]) //take out endquotes
                 chunks.append(stringDraft) //add final to
             }else { chunks.append(lineParts[i]) } //if no quotes found just keep adding
             i += 1
         }
         return chunks
+    }
+    
+    func immediateValueRouteToken(chunk : String) -> Token{
+        //MARK: IMPLEMENTED IN SUCH A WAY THAT A STRING CONTAINING "#" OR "\" MAY CAUSE ERRORS.
+        if chunk.contains("#") {
+            //INTEGER
+            let type = TokenType.ImmediateInteger
+            let intValue = Int(chunk.substring(from: chunk.index(after: chunk.startIndex)))
+            return Token(type: type, intValue: intValue, stringValue: nil, tupleValue: nil)
+        }else if chunk.contains("\\") {
+            //TO BE IMPLEMENTED, TUPLE
+            let type = TokenType.ImmediateTuple
+            return Token(type: type, intValue: nil, stringValue: nil, tupleValue: nil)
+        }else {
+            //STRING 
+            let type = TokenType.ImmediateString
+            let stringValue = chunk
+            return Token(type: type, intValue: nil, stringValue: stringValue, tupleValue: nil)
+        }
+        
+    }
+    
+    func directiveRouteToken(chunk : String) -> Token {
+        let type = TokenType.Directive
+        let stringValue = chunk.substring(from: chunk.index(after: chunk.startIndex))
+        return Token(type: type, intValue: nil, stringValue: stringValue, tupleValue: nil)
     }
     
     func Tokenize() {
@@ -67,10 +94,16 @@ class Tokenizer {
         var tupleValue : Tuple? = nil
         
         chunks = chunkize()
-        for i in 0 ..< chunks.count {
-            let chunk = chunks[i]
+        var i : Int = 0
+        while i < chunks.count {
+            var chunk = chunks[i]
             
-            if chunk.contains(":") {
+            if chunk.contains("\"") {
+                //STRING
+                type = TokenType.ImmediateString
+                stringValue = chunk.replacingOccurrences(of: "\"", with: "")
+                tokens.append(Token(type: type, intValue: nil, stringValue: stringValue, tupleValue: nil))
+            }else if chunk.contains(":") {
                 //LABEL
                 type = TokenType.Label
                 stringValue = chunk.substring(to: chunk.index(before: chunk.endIndex))
@@ -80,12 +113,7 @@ class Tokenizer {
                 type = TokenType.Directive
                 stringValue = chunk.substring(from: chunk.index(after: chunk.startIndex))
                 tokens.append(Token(type: type, intValue: nil, stringValue: stringValue, tupleValue: nil))
-            }else if chunk.contains(" ") {
-                //STRING
-                type = TokenType.ImmediateString
-                stringValue = chunk
-                tokens.append(Token(type: type, intValue: nil, stringValue: stringValue, tupleValue: nil))
-            }else if chunk.contains("#") {
+            }else if chunk.characters.contains("#") {
                 //INTEGER
                 type = TokenType.ImmediateInteger
                 intValue = Int(chunk.substring(from: chunk.index(after: chunk.startIndex)))
