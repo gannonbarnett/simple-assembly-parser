@@ -57,12 +57,12 @@ struct Token: CustomStringConvertible {
 
 struct Tuple: CustomStringConvertible {
     let currentState: Int
-    let inputCharacter: Int
+    let inputCharacter: Character
     let newState: Int
-    let outputCharacter: Int
-    let direction: Int
+    let outputCharacter: Character
+    let direction: Character
     
-    init(currS: Int, inputC: Int, newS: Int, outC: Int, dir: Int) {
+    init(currS: Int, inputC: Character, newS: Int, outC: Character, dir: Character) {
         currentState = currS
         inputCharacter = inputC
         newState = newS

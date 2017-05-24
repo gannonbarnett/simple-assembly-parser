@@ -9,25 +9,24 @@
 import Foundation
 
 class Assembler {
-    var t = Tokenizer()
     let file : String
+    let t : Tokenizer
     
     init(file: String) {
         self.file = file
-        load(fileName: file)
-    }
-    
-    func load(fileName: String) {
-        let (message, text) = readTextFile("/Users/gannonbarnett/Desktop/xCodeThings/SAP/" + fileName + ".txt")
+        let (message, text) = readTextFile("/Users/gannonbarnett/Desktop/xCodeThings/SAP/" + file + ".txt")
         guard message == nil else {
             print("Error: File \(file) not found")
+            t = Tokenizer(lines: ["ERROR"])
             return
         }
-        var lines = splitStringIntoLines(expression: text!)
-        for l in lines {
-            t.setLine(to: l)
-            t.printTokens()
-        }
+        let lines = splitStringIntoLines(expression: text!)
+        
+        self.t = Tokenizer(lines: lines)
         print("Load finished!")
+    }
+    
+    func printTokens() {
+        t.printTokens()
     }
 }

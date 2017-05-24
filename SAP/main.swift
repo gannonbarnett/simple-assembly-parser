@@ -8,6 +8,5 @@
 
 import Foundation
 
-//let VMtest = VM(file: "doublesInput")
-
-let AssTest = Assembler(file: "factorialProgram")
+let VMtest = Assembler(file: "doublesInput")
+VMtest.printTokens()

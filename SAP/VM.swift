@@ -47,23 +47,7 @@ class VM {
         
         print("Load finished!")
     }
-    
-    //TEMPORARY ASSEMBLER TESTER
-    var TokenizerObj : Tokenizer = Tokenizer()
-    var tokens : [Token] = []
-    
-    func printTokens() {
-        for l in lines {
-            TokenizerObj.setLine(to: l)
-            tokens.append(contentsOf: TokenizerObj.getTokens())
-        }
-        
-        for t in tokens {
-            print(t)
-        }
-    }
-    
-    //END
+
     func getInstruction(rawValue: Int) -> Instruction{
         let instruction : Instruction = Instruction(rawValue: rawValue)!
         return instruction
@@ -437,7 +421,7 @@ class VM {
             
         case .stackc: //check stack condition, 0-ok, 1-full, 2-empty
             programCounter += 1
-            var destination = memory[programCounter]
+            let destination = memory[programCounter]
             registers[destination] = stack.getCondition()
             
             
