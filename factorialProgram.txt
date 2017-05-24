@@ -7,4 +7,4 @@ here: movmr number r0
 	movie #7 r0
 	jar mystery 
 	halt
-mystery: mover r0 r1
+mystery: movrr r0 r1
