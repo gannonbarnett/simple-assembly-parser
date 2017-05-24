@@ -5,6 +5,6 @@ mess2: .string “ is “
 here: movmr number r0
 	jsr mystery
 	movir #7 r0
-	jar mystery 
+	jsr mystery 
 	halt
 mystery: movrr r0 r1
