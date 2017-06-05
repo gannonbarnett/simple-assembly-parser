@@ -4,7 +4,7 @@ mess1: .string "The something of"
 mess2: .string " is "
 here: movmr number r0
 	jsr mystery
-	movie #7 r0
+	movir #7 r0
 	jsr mystery 
 	halt
 mystery: movrr r0 r1
