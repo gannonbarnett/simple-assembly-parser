@@ -525,9 +525,10 @@ class VM {
             
         case .jmpne:
             var destination : Int = 0
+            programCounter += 1
             if compareRegister != 0 {
                 destination = memory[programCounter]
-                programCounter = destination - 2
+                programCounter = destination
             }else {
                 programCounter += 1
             }

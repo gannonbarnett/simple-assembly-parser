@@ -8,5 +8,7 @@
 
 import Foundation
 
-let VMtest = Assembler(file: "doublesInput")
-VMtest.printTokens()
+let Asstest = Assembler(fileName: "doubleProgramText")
+
+Asstest.Assemble()
+Asstest.printMemory()

@@ -1,10 +1,10 @@
 .start here
 number: .integer #5 
-mess1: .string “The something of“
-mess2: .string “ is “
+mess1: .string "The something of"
+mess2: .string " is "
 here: movmr number r0
 	jsr mystery
 	movie #7 r0
-	jar mystery 
+	jsr mystery 
 	halt
 mystery: mover r0 r1

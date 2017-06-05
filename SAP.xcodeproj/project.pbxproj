@@ -29,6 +29,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		161108C41EDDCFEA001F83BF /* doublesInput.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = doublesInput.txt; sourceTree = SOURCE_ROOT; };
+		161108C51EDDD0AA001F83BF /* doubleProgramText.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = doubleProgramText.txt; sourceTree = SOURCE_ROOT; };
 		1623AB121EBA520D0039E3FD /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		1623AB141EBA560D0039E3FD /* Tokenizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
 		1623AB1C1EC38F230039E3FD /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
@@ -72,6 +74,8 @@
 			isa = PBXGroup;
 			children = (
 				1686DCC71E956D1700E0B3F4 /* main.swift */,
+				161108C51EDDD0AA001F83BF /* doubleProgramText.txt */,
+				161108C41EDDCFEA001F83BF /* doublesInput.txt */,
 				1686DCFB1E9BEA8500E0B3F4 /* VM.swift */,
 				1686DD041EAE6AF200E0B3F4 /* Assembler.swift */,
 				1623AB1C1EC38F230039E3FD /* Stack.swift */,
