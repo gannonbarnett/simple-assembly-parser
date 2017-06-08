@@ -31,6 +31,9 @@ class Assembler {
         loadFile(fileName)
     }
     
+    let oneParInstructions : [String] = ["outs", "outc", "jmpp", "jmpne", "jmp"]
+    //Used to prevent bugs in Assembler. View note in Assembler for more info.
+    
     func loadFile(_ fileName: String) {
         let (message, text) = readTextFile("/Users/gannonbarnett/Desktop/xCodeThings/SAP/" + fileName + ".txt")
         
@@ -40,16 +43,33 @@ class Assembler {
         }
         
         let lines = splitStringIntoLines(expression: text!)
-        let tokenizerObject = Tokenizer(lines: lines)
-        let fullTokens = tokenizerObject.getTokens()
+        let tokenizer = Tokenizer(lines: lines)
+        let fullTokens = tokenizer.getTokens()
         startLabel = fullTokens[1].stringValue!
         
         for i in 2 ..< fullTokens.count {
             tokens.append(fullTokens[i])
         }
     
-        print("Load finished!")
+        Assemble()
+
+        print(makeListFile(lines: lines))
     }
+    
+    func makeListFile(lines: [String]) -> String{
+        let tokenizer = Tokenizer()
+        var listFile : String = String()
+        var memoryIndex = 0
+        var lineTokens : [Token] = []
+        var mem : [Int] = []
+        var memIntro : [Int] = []
+        
+        for line in lines {
+            
+        }
+        return listFile
+    }
+
     
     enum Instruction : Int {
         case halt
@@ -118,64 +138,97 @@ class Assembler {
         }
     }
     
+    
+    func printTokens() {
+        print(tokens)
+    }
+
     func Assemble() {
-        print("first pass...")
         memory.append(0)
         memory.append(0)
         
-        var emptySlots : [Int : String] = [:]
-        //** NOTE ON emptySlots **
-        //Memory index is key, Label is value.
-        //Used to hold place if Label has unknown location
+        var emptySlots : [String : [Int]] = [String : [Int]]()
+        /** NOTE ON emptySlots **
+        Key is a label name, value is an array of all instances (indexes) 
+         in memory where the label index is required but unknown.
+        **/
         
         //MARK:: FIRST PASS. POST CONDITION: MEMORY HAY HAVE NIL VALUES
-        var memoryCounter = 0
+        var memoryIndex = 1
         for n in 0 ..< tokens.count {
             let t = tokens[n]
+            memoryIndex = memory.count - 1
             
             switch t.type {
             case .Label :
                 
                 if let i = symbolTable[t.stringValue!] {
+                    //See if the label has already been defined. If so, add label memory index.
                     memory.append(i)
-                    symbolTable[t.stringValue!] = memoryCounter
-                    memoryCounter += 1
-                }else if tokens[n + 1].type == TokenType.Directive || tokens[n + 1].type == TokenType.Instruction {
-                    symbolTable[t.stringValue!] = memoryCounter
-                    
-                } else {
+                } else if n != 0 && oneParInstructions.contains(where: {$0 == tokens[n-1].stringValue} ) {
+                    //Else check to see if an instruction with only one parameter precedes the label.
+                    //If true, the label is not defined and is being used as a parameter.
+                    //Add the memory index to emptySlot array.
                     memory.append(nil)
-                    emptySlots[memoryCounter] = t.stringValue!
-                    memoryCounter += 1
+                    memoryIndex += 1
+                    if emptySlots.contains(where: {$0.key == t.stringValue!}) {
+                        emptySlots[t.stringValue!]!.append(memoryIndex)
+                    }else {
+                        emptySlots[t.stringValue!] = [memoryIndex]
+                    }
+                    
+
+                }else if tokens[n + 1].type == TokenType.Directive || tokens[n + 1].type == TokenType.Instruction {
+                    //Else check to see if the next token is a directive or instruciton. 
+                    //If true, the label is being defined.
+                    symbolTable[t.stringValue!] = memoryIndex - 1
+                } else {
+                    //Else the label is undefined and being used as a parameter.
+                    //Add to emptySlots
+                    memory.append(nil)
+                    memoryIndex += 1
+                    emptySlots[t.stringValue!]?.append(memoryIndex)
                 }
                 
             case .ImmediateString :
                 memory.append(t.stringValue!.characters.count)
-                memoryCounter += 1
+                memoryIndex += 1
+                
                 for c in t.stringValue!.characters {
                     memory.append(charToAscii(c: c))
-                    memoryCounter += 1
+                    memoryIndex += 1
                 }
                 
             case .ImmediateInteger :
                 memory.append(t.intValue!)
-                memoryCounter += 1
                 
             case .ImmediateTuple :
-                //IMPLEMENT
-                print("lol")
+                let tuple = t.tupleValue!
+                let currentState = tuple.currentState
+                let inputCharInt = charToAscii(c: tuple.inputCharacter)
+                let newState = tuple.newState
+                let outCharInt = charToAscii(c: tuple.outputCharacter)
+                var dirInt = Int()
+                if tuple.direction == "r" {
+                    dirInt = 1
+                }else if tuple.direction == "l" {
+                    dirInt = 0
+                }
+                memory.append(currentState)
+                memory.append(inputCharInt)
+                memory.append(newState)
+                memory.append(outCharInt)
+                memory.append(dirInt)
                 
             case .Instruction :
                 if let i = Instructions[t.stringValue!] {
                     memory.append(i)
-                    memoryCounter += 1
                 }else {
                     print("ERROR:: INVALID INSTRUCTION", t)
                 }
                 
             case .Register :
                 memory.append(t.intValue!)
-                memoryCounter += 1
                 
             case .Directive :
                 break
@@ -186,23 +239,18 @@ class Assembler {
         }
         
         //MARK:: SECOND PASS. POSTCONDITION: MEMORY WILL BE COMPLETE
-        for i in emptySlots.keys {
-            let label = emptySlots[i]!
-            
-            guard !symbolTable.contains(where: {$0.key == label} ) else{
-                print("ERROR:: INVALID LABEL", label)
-                return
+        for label in emptySlots.keys {
+            let value = symbolTable[label]
+            let slots = emptySlots[label]!
+            for n in slots {
+                memory[n] = value
             }
-            memory[i] = symbolTable[label]!
+            
         }
         
-        //MARK:: COMPLETE. POSTCONDITION: MEMORY SIZE AND START FILLED
+        //MARK:: FINAL ADDITIONS. POSTCONDITION: MEMORY SIZE AND START FILLED, ASSEMBLY COMPLETE
         memory[0] = memory.count - 2
         memory[1] = symbolTable[startLabel]!
         
-    }
-    
-    func printTokens() {
-        print(tokens)
     }
 }

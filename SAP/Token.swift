@@ -71,7 +71,7 @@ struct Tuple: CustomStringConvertible {
     }
     
     var description: String {
-        return "/ \(currentState) \(inputCharacter) \(newState) \(outputCharacter) \(direction)"
+        return "\(currentState) \(inputCharacter) \(newState) \(outputCharacter) \(direction)"
     }
 }
 

@@ -9,7 +9,7 @@
 import Foundation
 
 class VM {
-
+    
     let file : String
     var memory = [Int]()
     var registers = [Int](repeating: 0, count: 10)
@@ -21,15 +21,15 @@ class VM {
     var stackPointer : Int = 0
     
     var labels = [[Int : String]]() //Int is position, String is label
-  
+    
     init(file: String) {
         self.file = file
         load(fileName: file)
     }
     
-
+    
     func load(fileName: String) {
-        let (message, text) = readTextFile("/Users/gannonbarnett/Desktop/xCodeThings/SAP/" + fileName + ".txt")
+        let (message, text) = readTextFile("/Users/maxgoldberg1/Desktop/Programming_Class_Projects/SAP/SAP/" + fileName + ".txt")
         guard message == nil else {
             print("Error: File \(file) not found")
             return
@@ -47,7 +47,7 @@ class VM {
         
         print("Load finished!")
     }
-
+    
     func getInstruction(rawValue: Int) -> Instruction{
         let instruction : Instruction = Instruction(rawValue: rawValue)!
         return instruction
@@ -319,6 +319,7 @@ class VM {
             programCounter += 1
             let destination = memory[programCounter]
             programCounter = destination
+            programCounter -= 1
             
         case .sojz:
             programCounter += 1
@@ -524,13 +525,12 @@ class VM {
             print(character, terminator: "")
             
         case .jmpne:
-            var destination : Int = 0
             programCounter += 1
+            var destination = 0
+            destination = memory[programCounter]
             if compareRegister != 0 {
-                destination = memory[programCounter]
                 programCounter = destination
-            }else {
-                programCounter += 1
+                programCounter -= 1
             }
             
         case .clrr:

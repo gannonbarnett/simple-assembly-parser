@@ -8,7 +8,13 @@
 
 import Foundation
 
-let Asstest = Assembler(fileName: "doubleProgramText")
+let Asstest = Assembler(fileName: "TuringMachine")
 
-Asstest.Assemble()
-Asstest.printMemory()
+//Asstest.printTokens()
+
+
+/**
+let tokenTest = Tokenizer(lines: [])
+
+tokenTest.Tokenize(".tuple \\1 1 1 0 r\\")
+print(tokenTest.getTokens()) **/
