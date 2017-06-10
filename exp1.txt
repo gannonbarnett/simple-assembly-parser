@@ -1,9 +1,0 @@
-.Start IntroMess
-FirstTuple:  .tuple \0 _ 0 _ r\
-		.tuple \0 0 1 1 r\
-		.tuple \0 1 1 0 r\
-		.tuple \1 0 1 1 r\
-		.tuple \1 1 1 0 r\
-Tape:        .String "____1111100000101010___"
-IntroMess:   .String "Starting Turing Machine!"
-.end
