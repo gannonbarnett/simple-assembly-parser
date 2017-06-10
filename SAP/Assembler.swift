@@ -9,7 +9,11 @@
 import Foundation
 
 class Assembler {
-    let file : String = ""
+    var path : String = ""
+    var fileName : String = ""
+    var fullFileName : String {
+        return path + fileName + ".txt"
+    }
     
     var startLabel = ""
     var tokens = [Token]()
@@ -19,7 +23,12 @@ class Assembler {
     
     var Instructions : [String : Int] = [:]
     
-    init(fileName : String) {
+    func setPathTo(_ path : String) {
+        self.path = path
+    }
+    
+    func AssembleFile(_ file : String) {
+        fileName = file
         //make dictionary so string -> rawvalue is possible
         var counter = 0
         for i in ["halt" , "clrr", "clrx", "clrm", "clrb", "movir", "movrr", "movrm", "movmr", "movxr", "movar", "movb", "addir", "addrr", "addmr", "addxr", "subir", "subrr", "submr", "subxr", "mulir", "mulrr", "mulmr", "mulxr", "divir", "divrr", "divmr", "divxr", "jmp", "sojz", "sojnz", "aojz", "aojnz", "cmpir", "cmprr", "cmpmr", "jmpn", "jmpz", "jmpp", "jsr", "ret", "push", "pop", "stackc", "outci", "outcr", "outcx", "outcb", "readi", "printi", "readc", "readln", "brk", "movrx", "movxx", "outs", "nop", "jmpne"] {
@@ -27,18 +36,18 @@ class Assembler {
             counter += 1
         }
         
-        //load file 
-        loadFile(fileName)
+        //load file
+        loadFile()
     }
     
     let oneParInstructions : [String] = ["outs", "outc", "jmpp", "jmpne", "jmp"]
     //Used to prevent bugs in Assembler. View note in Assembler for more info.
     
-    func loadFile(_ fileName: String) {
-        let (message, text) = readTextFile("/Users/gannonbarnett/Desktop/xCodeThings/SAP/" + fileName + ".txt")
+    func loadFile() {
+        let (message, text) = readTextFile(fullFileName)
         
         guard message == nil else {
-            print("Error: File \(file) not found")
+            print("Error: File \(fullFileName) not found")
             return
         }
         
@@ -52,11 +61,12 @@ class Assembler {
         }
     
         Assemble()
-
-        print(makeListFile(lines: lines))
+        makeListFile(lines: lines)
+        makeBinFile()
+        makeSymFile()
     }
     
-    func makeListFile(lines: [String]) -> String{
+    func makeListFile(lines: [String]) {
         let tokenizer = Tokenizer()
         var listFile : String = String()
         var memoryIndex = 0
@@ -65,73 +75,56 @@ class Assembler {
         var memIntro : [Int] = []
         
         for line in lines {
+            lineTokens = tokenizer.tokensFromLine(line)
+            mem = AssembleTokens(lineTokens)
+            memoryIndex += mem.count
+            var i = 0
+            while i < 4 && i < mem.count {
+                memIntro.append(mem[i])
+                i += 1
+            }
             
+            listFile.append("\(memoryIndex): ")
+            listFile.append(fitA(array: memIntro))
+            listFile.append("\t\t")
+            listFile.append(line)
+            listFile.append("\n")
+            mem = []
+            memIntro = []
         }
-        return listFile
+        let listFilePath = path + fileName + ".lst"
+        let errorMessage = writeTextFile(listFilePath, data: listFile)
+        if errorMessage != nil {
+            print(errorMessage!)
+        }
+        //prints errors if any
     }
 
+    func makeBinFile() {
+        var binFile : String = ""
+        for i in memory{
+            binFile.append(String(i!))
+            binFile.append("\n")
+        }
+        let binFilePath = path + fileName + ".bin"
+        let errorMessage = writeTextFile(binFilePath, data: binFile)
+        if errorMessage != nil {
+            print(errorMessage!)
+        }
+    }
     
-    enum Instruction : Int {
-        case halt
-        case clrr
-        case clrx
-        case clrm
-        case clrb
-        case movir
-        case movrr
-        case movrm
-        case movmr
-        case movxr
-        case movar
-        case movb
-        case addir
-        case addrr
-        case addmr
-        case addxr
-        case subir
-        case subrr
-        case submr
-        case subxr
-        case mulir
-        case mulrr
-        case mulmr
-        case mulxr
-        case divir
-        case divrr
-        case divmr
-        case divxr
-        case jmp
-        case sojz
-        case sojnz
-        case aojz
-        case aojnz
-        case cmpir
-        case cmprr
-        case cmpmr
-        case jmpn
-        case jmpz
-        case jmpp
-        case jsr
-        case ret
-        case push
-        case pop
-        case stackc
-        case outci
-        case outcr
-        case outcx
-        case outcb
-        case readi
-        case printi
-        case readc
-        case readln
-        case brk
-        case movrx
-        case movxx
-        case outs
-        case nop
-        case jmpne
+    func makeSymFile() {
+        var symFile : String = "Symbol Table: \n"
+        for (label, value) in symbolTable {
+            symFile.append("\t\(label): \(String(value))\n")
+        }
+        let symFilePath = path + fileName + ".sym"
+        let errorMessage = writeTextFile(symFilePath, data: symFile)
+        if errorMessage != nil {
+            print(errorMessage!)
+        }
     }
-
+    
     func printMemory() {
         for i in memory{
             print(i!)
@@ -252,5 +245,68 @@ class Assembler {
         memory[0] = memory.count - 2
         memory[1] = symbolTable[startLabel]!
         
+    }
+    
+    func AssembleTokens(_ tokenInput: [Token]) -> [Int] {
+        var mem : [Int] = []
+        
+        for n in 0 ..< tokenInput.count {
+            let t = tokenInput[n]
+            switch t.type {
+            case .Label :
+                if n < tokenInput.count - 1 && tokenInput[n+1].type != TokenType.Directive && tokenInput[n+1].type != TokenType.Directive && tokenInput[n+1].type != TokenType.Instruction {
+                    mem.append(symbolTable[t.stringValue!]!)
+                }else if n != 0 && oneParInstructions.contains(where: {$0 == tokenInput[n-1].stringValue} ) {
+                    mem.append(symbolTable[t.stringValue!]!)
+                }
+                
+            case .Directive :
+                break
+                
+            case .ImmediateString :
+                mem.append(t.stringValue!.characters.count)
+                
+                for c in t.stringValue!.characters {
+                    mem.append(charToAscii(c: c))
+                }
+                
+            case .ImmediateInteger :
+                mem.append(t.intValue!)
+            
+            case .ImmediateTuple :
+                let tuple = t.tupleValue!
+                let currentState = tuple.currentState
+                let inputCharInt = charToAscii(c: tuple.inputCharacter)
+                let newState = tuple.newState
+                let outCharInt = charToAscii(c: tuple.outputCharacter)
+                var dirInt = Int()
+                if tuple.direction == "r" {
+                    dirInt = 1
+                }else if tuple.direction == "l" {
+                    dirInt = 0
+                }
+                mem.append(currentState)
+                mem.append(inputCharInt)
+                mem.append(newState)
+                mem.append(outCharInt)
+                mem.append(dirInt)
+            
+            case .Register :
+                mem.append(t.intValue!)
+                
+            case .Instruction :
+                if let i = Instructions[t.stringValue!] {
+                    mem.append(i)
+                }else {
+                    print("ERROR:: INVALID INSTRUCTION", t)
+                }
+                
+            case .BadToken :
+                print("BAD TOKEN FOUND", t)
+                break
+            }
+        }
+        
+        return mem
     }
 }

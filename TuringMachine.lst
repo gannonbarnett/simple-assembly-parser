@@ -45,7 +45,7 @@
 132: 53 6 0          	   	     movrx r6 r0
 135:                 			
 135: 12 1 3          		     addir #1 r3
-138: 1 7             	             clrr r7
+138: 1 7             		     clrr r7
 140: 15 3 7          	    	     addxr r3 r7
 143: 44 10           	             outci #10
 145: 55 25           		     outs Tape             ; Print Out Each Stage of Turing

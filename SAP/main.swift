@@ -8,7 +8,8 @@
 
 import Foundation
 
-let Asstest = Assembler(fileName: "TuringMachine")
+let UItest = UI()
+UItest.run()
 
 //Asstest.printTokens()
 

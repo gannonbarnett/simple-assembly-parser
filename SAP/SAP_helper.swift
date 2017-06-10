@@ -45,6 +45,17 @@ func readTextFile(_ path: String) -> (message: String?, fileText: String?) {
     return (nil, text)
 }
 
+func printFile(_ path: String) {
+    var text: String = ""
+    do {
+        text = try String(contentsOfFile: path, encoding: String.Encoding.utf8)
+    }
+    catch {
+        print("File not found")
+    }
+    print(text)
+}
+
 func writeTextFile(_ path: String, data: String) -> String? {
     let url = NSURL.fileURL(withPathComponents: [path])
     do {
@@ -71,7 +82,7 @@ func fitA(array ia: [Int], _ size: Int = 8, right: Bool = false) -> String{
     return fit(arrayAsString, newLength > size ? newLength : size,right: right)
 }
 
-func fit(_ s: String, _ size: Int = 8, right: Bool = true) -> String{
+func fit(_ s: String, _ size: Int = 8, right: Bool = false) -> String{
     var result = ""
     let sSize = s.characters.count
     if sSize == size {return s}

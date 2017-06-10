@@ -10,26 +10,34 @@ import Foundation
 
 class VM {
     
-    let file : String
-    var memory = [Int]()
-    var registers = [Int](repeating: 0, count: 10)
-    var stack : IntStack = IntStack(size: 10)
-    var lines : [String] = []
+    private var file : String
+    private var memory = [Int]()
+    private var registers = [Int](repeating: 0, count: 10)
+    private var stack : IntStack = IntStack(size: 10)
+    private var lines : [String] = []
     
-    var programCounter : Int = 0
-    var compareRegister : Int = 0
-    var stackPointer : Int = 0
+    private var programCounter : Int = 0
+    private var compareRegister : Int = 0
+    private var stackPointer : Int = 0
     
     var labels = [[Int : String]]() //Int is position, String is label
     
-    init(file: String) {
-        self.file = file
-        load(fileName: file)
+    init () {
+        file = ""
     }
     
+    init(file: String) {
+        self.file = file
+        load(file)
+    }
     
-    func load(fileName: String) {
-        let (message, text) = readTextFile("/Users/maxgoldberg1/Desktop/Programming_Class_Projects/SAP/SAP/" + fileName + ".txt")
+    func setFileTo(_ fileName: String) {
+        file = fileName
+        load(fileName)
+    }
+    
+    private func load(_ fileName: String) {
+        let (message, text) = readTextFile(fileName)
         guard message == nil else {
             print("Error: File \(file) not found")
             return
@@ -48,12 +56,12 @@ class VM {
         print("Load finished!")
     }
     
-    func getInstruction(rawValue: Int) -> Instruction{
+    private func getInstruction(rawValue: Int) -> Instruction{
         let instruction : Instruction = Instruction(rawValue: rawValue)!
         return instruction
     }
     
-    enum Instruction : Int {
+    private enum Instruction : Int {
         case halt
         case clrr
         case clrx
@@ -114,7 +122,7 @@ class VM {
         case jmpne
     }
     
-    func execute(command : Instruction) {
+    private func execute(command : Instruction) {
         switch command {
             
         case .clrx:
@@ -545,7 +553,7 @@ class VM {
         
     }
     
-    func toUnicodeChar(pc : Int) -> String {
+    private func toUnicodeChar(pc : Int) -> String {
         let str_LOCATION = memory[pc]
         let str_LENGTH = memory[str_LOCATION]
         var s = String()

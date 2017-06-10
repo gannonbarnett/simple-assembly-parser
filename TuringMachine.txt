@@ -53,7 +53,7 @@ SetupTuringMachine:  movar Tape r0
 	   	     movrx r6 r0
 			
 		     addir #1 r3
-	             clrr r7
+		     clrr r7
 	    	     addxr r3 r7
 	             outci #10
 		     outs Tape             ; Print Out Each Stage of Turing

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		161109091EE4E8D0001F83BF /* AssemblerBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 161109081EE4E8D0001F83BF /* AssemblerBackup.swift */; };
+		1611090B1EE9F79D001F83BF /* UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611090A1EE9F79D001F83BF /* UI.swift */; };
 		1623AB131EBA520D0039E3FD /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1623AB121EBA520D0039E3FD /* Token.swift */; };
 		1623AB151EBA560D0039E3FD /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1623AB141EBA560D0039E3FD /* Tokenizer.swift */; };
 		1623AB1D1EC38F230039E3FD /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1623AB1C1EC38F230039E3FD /* Stack.swift */; };
@@ -30,9 +31,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		161108C41EDDCFEA001F83BF /* doublesInput.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = doublesInput.txt; sourceTree = SOURCE_ROOT; };
-		161108C51EDDD0AA001F83BF /* doubleProgramText.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = doubleProgramText.txt; sourceTree = SOURCE_ROOT; };
 		161109081EE4E8D0001F83BF /* AssemblerBackup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssemblerBackup.swift; sourceTree = "<group>"; };
+		1611090A1EE9F79D001F83BF /* UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI.swift; sourceTree = "<group>"; };
 		1623AB121EBA520D0039E3FD /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		1623AB141EBA560D0039E3FD /* Tokenizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
 		1623AB1C1EC38F230039E3FD /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
@@ -41,7 +41,6 @@
 		1686DCFB1E9BEA8500E0B3F4 /* VM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VM.swift; sourceTree = "<group>"; };
 		1686DD001EA1300400E0B3F4 /* SAP_helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAP_helper.swift; sourceTree = "<group>"; };
 		1686DD041EAE6AF200E0B3F4 /* Assembler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assembler.swift; sourceTree = "<group>"; };
-		16FBE3BB1ECDEBF400BD0678 /* factorialProgram.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = factorialProgram.txt; path = ../factorialProgram.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +59,6 @@
 			children = (
 				1686DCC61E956D1700E0B3F4 /* SAP */,
 				1686DCC51E956D1700E0B3F4 /* Products */,
-				16FBE3BB1ECDEBF400BD0678 /* factorialProgram.txt */,
 			);
 			sourceTree = "<group>";
 		};
@@ -76,9 +74,8 @@
 			isa = PBXGroup;
 			children = (
 				1686DCC71E956D1700E0B3F4 /* main.swift */,
-				161108C51EDDD0AA001F83BF /* doubleProgramText.txt */,
-				161108C41EDDCFEA001F83BF /* doublesInput.txt */,
 				1686DCFB1E9BEA8500E0B3F4 /* VM.swift */,
+				1611090A1EE9F79D001F83BF /* UI.swift */,
 				1686DD041EAE6AF200E0B3F4 /* Assembler.swift */,
 				161109081EE4E8D0001F83BF /* AssemblerBackup.swift */,
 				1623AB1C1EC38F230039E3FD /* Stack.swift */,
@@ -155,6 +152,7 @@
 				161109091EE4E8D0001F83BF /* AssemblerBackup.swift in Sources */,
 				1686DCC81E956D1700E0B3F4 /* main.swift in Sources */,
 				1686DCFC1E9BEA8500E0B3F4 /* VM.swift in Sources */,
+				1611090B1EE9F79D001F83BF /* UI.swift in Sources */,
 				1686DD011EA1300400E0B3F4 /* SAP_helper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
